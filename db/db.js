@@ -1,7 +1,7 @@
 const { MongoClient } = require('mongodb');
 
 const init = (connectionString) => {
-    return MongoClient.connect(connectionString, { useNewUrlParser: true });
+    return MongoClient.connect(connectionString);
 };
 
 module.exports = { init };
