@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { getRequest as get } from '../utils/requests';
 import Question from '../components/question';
+import socketIOClient from 'socket.io-client';
 
 class Room extends Component {
     constructor(props) {
@@ -21,7 +22,6 @@ class Room extends Component {
 
 
     render() {
-        console.log(this.state.questions)
         return (
             <div className="Room">
                 <h1>Room {this.props.match.params.id}</h1>
