@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
 import Home from './pages/home';
+import { Switch, Route } from 'react-router-dom';
+import Room from './components/room';
 
 class App extends Component {
   constructor(props) {
@@ -11,7 +13,12 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Home />
+        <main>
+          <Switch>
+            <Route exact path='/' component={Home} />
+            <Route exact path='/room/:id' render={(props) => (<Room {...props}/>)} />
+          </Switch>
+        </main>
       </div>
     );
   }
