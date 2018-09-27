@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { postRequest as post } from '../utils/requets';
+import { getRequest as get } from '../utils/requests';
 
 class RoomForm extends Component {
     constructor(props) {
@@ -12,8 +12,8 @@ class RoomForm extends Component {
     joinRoom() {
         const roomID = this.state.inputValue;
         this.setState({ inputValue: '' });
-        fetch('/api/rooms/' + roomID)
-            .then((room) => console.log(room));
+        get('http://localhost:5000/api/room/' + roomID)
+            .then((data) => console.log(data));
     }
 
     updateInputValue(e) {
@@ -21,7 +21,7 @@ class RoomForm extends Component {
     }
 
     render() {
-        
+
         return (
             <div className="RoomForm">
                 <label>RoomID</label>

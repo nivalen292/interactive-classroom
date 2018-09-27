@@ -4,7 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 const cookieParser = require('cookie-parser');
-
+const cors = require('cors');
 
 const app = express();
 
@@ -14,6 +14,7 @@ const init = (data) => {
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(cookieParser());
+    app.use(cors());
 
     if (process.env.NODE_ENV === 'production') {
         // Serve any static files
@@ -23,6 +24,8 @@ const init = (data) => {
             res.sendFile(path.join(__dirname, 'interactive-classroom-client/build', 'index.html'));
         });
     }
+
+    app.use('/', express.static('interactive-classroom-client/build'));
     
     require('./routers')
         .attachTo(app, db, data);

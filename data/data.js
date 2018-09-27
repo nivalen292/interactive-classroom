@@ -1,10 +1,10 @@
 const init = (db) => {
     const objectId = require('mongodb').ObjectID;
-    const roomCollection = db.collection('interactive-chatroom-rooms');
+    const roomCollection = db.collection('interactive-classroom-rooms');
 
     const getRoomById = (id) => {
         return roomCollection
-            .filterOne({id: id})
+            .findOne({id: +id})
             .then((result) => Promise.resolve(result));
     }
 

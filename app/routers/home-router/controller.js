@@ -6,7 +6,7 @@ const init = (db, data) => {
     const controller = {
         getRoomById(request, response) {
             return data.getRoomById(request.params.id)
-                .then((room) => Promise.resolve(room));
+                .then((room) => response.json(room));
         }
     }
     return controller;
