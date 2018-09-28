@@ -25,7 +25,7 @@ class OwnerForm extends Component {
         }
         put('http://localhost:5000/api/room', { name: this.state.name, password: sha256(this.state.password).toString() })
             .then((response) => {
-                if (response.status == 200) {
+                if (response.status === 200) {
                     return response.json();
                 }
                 throw new Error('Wrong credentials!');

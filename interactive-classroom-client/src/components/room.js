@@ -28,6 +28,15 @@ class Room extends Component {
             });
     }
 
+    isAuthenticated() {
+        try {
+            return this.props.location.state.isOwner;
+        }
+        catch(e) {
+            return false;
+        }
+    }
+
 
     render() {
         return (
