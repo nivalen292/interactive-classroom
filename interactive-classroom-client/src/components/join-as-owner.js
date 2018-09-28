@@ -19,6 +19,10 @@ class OwnerForm extends Component {
     }
 
     joinRoom() {
+        if (this.state.password === '' || this.state.name === '') {
+            NotificationManager.error('You must enter a name and password first!', 'Error!', 3000);
+            return;
+        }
         put('http://localhost:5000/api/room', { name: this.state.name, password: sha256(this.state.password).toString() })
             .then((response) => {
                 if (response.status == 200) {
@@ -29,10 +33,9 @@ class OwnerForm extends Component {
             .then((room) => {
                 this.setState({ roomID: room.roomID });
                 this.setState({ isAutheticated: true });
-                //this.props.history.push('/room/' + room.roomID);
             })
             .catch((error) => {
-                NotificationManager.error('There is no room with that name!', 'Error', 5000);
+                NotificationManager.error(error.message, 'Error', 5000);
             });
         this.setState({ name: '' });
         this.setState({ password: '' });

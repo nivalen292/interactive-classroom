@@ -17,7 +17,7 @@ class CreateRoom extends Component {
 
     createRoom() {
         if (this.state.password === '' || this.state.name === '') {
-            NotificationManager.error('You must enter a name and password first!', 'Okay!', 3000);
+            NotificationManager.error('You must enter a name and password first!', 'Error!', 3000);
             return;
         }
         post('http://localhost:5000/api/room', {
@@ -26,7 +26,7 @@ class CreateRoom extends Component {
         })
             .then((response) => {
                 if (response.status === 409) {
-                    NotificationManager.error('A room with that name already exists', 'Okay!', 3000);
+                    NotificationManager.error('A room with that name already exists', 'Error!', 3000);
                 }
                 else if (response.status === 201) {
                     NotificationManager.success('Room created, you can now log in as owner to modify it!', 'Success', 5000);

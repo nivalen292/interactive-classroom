@@ -11,8 +11,22 @@ const init = (db, data) => {
         },
 
         getRoomByNameWhenJoining(request, response) {
+            const password = request.body.password;
             return data.getRoomByName(request.body.name)
-                .then((room) => response.json(room));
+                .then((room) => {
+                    if (password) {
+                        //login as owner
+                        if (password === room.password) {
+                            // success
+                            return response.json(room)
+                        }
+                        else {
+                            return response.status(409).json('Wrong credentials!');
+                        }
+                    }
+                    // login as guest
+                    return response.json(room)
+                });
         },
 
         createRoom(request, response) {
