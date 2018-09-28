@@ -35,9 +35,11 @@ class RoomForm extends Component {
 
         return (
             <div className="RoomForm">
+                <h2>Join as guest</h2>
                 <label>Name</label>
                 <input value={this.state.inputValue} onChange={this.updateInputValue.bind(this)} />
                 <button onClick={this.joinRoom.bind(this)}>Enter</button>
+                <NotificationContainer />
             </div>
         );
     }

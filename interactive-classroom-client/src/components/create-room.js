@@ -48,6 +48,7 @@ class CreateRoom extends Component {
 
         return (
             <div className="CreateRoom">
+                <h2>Create room</h2>
                 <label>Name</label>
                 <input value={this.state.name} onChange={this.updateName.bind(this)} />
                 <label>Password</label>
