@@ -10,6 +10,11 @@ const init = (db, data) => {
                 .then((room) => response.json(room));
         },
 
+        getRoomByNameWhenJoining(request, response) {
+            return data.getRoomByName(request.body.name)
+                .then((room) => response.json(room));
+        },
+
         createRoom(request, response) {
             const room = request.body;
             room.authKey = tokenGenerator.generate(32);

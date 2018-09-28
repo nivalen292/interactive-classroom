@@ -26,7 +26,7 @@ class CreateRoom extends Component {
         })
             .then((response) => {
                 if (response.status === 409) {
-                    NotificationManager.error('A room with that ID already exists', 'Okay!', 3000);
+                    NotificationManager.error('A room with that name already exists', 'Okay!', 3000);
                 }
                 else if (response.status === 201) {
                     NotificationManager.success('Room created, you can now log in as owner to modify it!', 'Success', 5000);

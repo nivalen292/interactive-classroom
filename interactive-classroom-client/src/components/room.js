@@ -3,13 +3,17 @@ import { getRequest as get } from '../utils/requests';
 import Question from '../components/question';
 import socketIOClient from 'socket.io-client';
 
+// react notifications
+import 'react-notifications/lib/notifications.css';
+import { NotificationContainer, NotificationManager } from 'react-notifications';
+
 class Room extends Component {
     constructor(props) {
         super(props);
         this.state = {
             name: '',
             questions: [],
-            currectQuestion: {text: "text", answers: ["ans1", "ans2"]}
+            currectQuestion: {text: '', answers: []}
         }
     }
 
@@ -19,6 +23,8 @@ class Room extends Component {
                 this.setState({questions: room.questions});
                 this.setState({currectQuestion: this.state.questions[0]});
                 this.setState({name: room.name});
+            }).catch((error) => {
+                NotificationManager.error('No room with ID: ' + this.props.match.params.roomID + ' exists!', 'Okay!', 3000);
             });
     }
 
@@ -26,8 +32,9 @@ class Room extends Component {
     render() {
         return (
             <div className="Room">
-                <h1>Room {this.state.name}</h1>
+                <h1>Room: {this.state.name}</h1>
                 <Question question={this.state.currectQuestion}/>
+                <NotificationContainer/>
             </div>
         );
     }

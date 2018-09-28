@@ -9,6 +9,17 @@ const postRequest = (url, data) => {
     });
 }
 
+const putRequest = (url, data) => {
+    return fetch(url, {
+        method: 'PUT',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+    });
+}
+
 const getRequest = (url) => {
     return fetch(url, {
             headers: {
@@ -21,4 +32,4 @@ const getRequest = (url) => {
             .catch((err) => console.log(err));
 }
 
-export { postRequest, getRequest };
+export { postRequest, getRequest, putRequest };

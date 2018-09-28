@@ -28,7 +28,8 @@ const init = (db) => {
 
     const data = {
         getRoomByID,
-        createRoom
+        createRoom,
+        getRoomByName
     };
 
     return Promise.resolve(data);
