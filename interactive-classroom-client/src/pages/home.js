@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import RoomForm from '../components/room-form';
 import CreateRoom from '../components/create-room';
+import OwnerForm from '../components/join-as-owner';
 
 class Home extends Component {
   constructor(props) {
@@ -16,6 +17,8 @@ class Home extends Component {
         <RoomForm />
         <br />
         <CreateRoom />
+        <br />
+        <OwnerForm />
       </div>
     );
   }

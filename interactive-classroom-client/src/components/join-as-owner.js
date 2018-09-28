@@ -19,10 +19,7 @@ class OwnerForm extends Component {
     }
 
     joinRoom() {
-        this.setState({ name: '' });
-        this.setState({ password: '' });
-        // modify url
-        put('http://localhost:5000/api/room', { name: name, password: sha256(this.state.password).toString() })
+        put('http://localhost:5000/api/room', { name: this.state.name, password: sha256(this.state.password).toString() })
             .then((response) => {
                 if (response.status == 200) {
                     return response.json();
@@ -37,6 +34,8 @@ class OwnerForm extends Component {
             .catch((error) => {
                 NotificationManager.error('There is no room with that name!', 'Error', 5000);
             });
+        this.setState({ name: '' });
+        this.setState({ password: '' });
     }
 
     updateName(e) {
@@ -62,7 +61,7 @@ class OwnerForm extends Component {
                 <input value={this.state.name} onChange={this.updateName.bind(this)} />
                 <label>Password</label>
                 <input value={this.state.password} onChange={this.updatePassword.bind(this)} />
-                <button onClick={this.createRoom.bind(this)}>Create</button>
+                <button onClick={this.joinRoom.bind(this)}>Join</button>
                 <NotificationContainer />
             </div>
         );
