@@ -7,16 +7,18 @@ class Room extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            name: '',
             questions: [],
             currectQuestion: {text: "text", answers: ["ans1", "ans2"]}
         }
     }
 
     componentDidMount() {
-        get('http://localhost:5000/api/room/' + this.props.match.params.id)
+        get('http://localhost:5000/api/room/' + this.props.match.params.roomID)
             .then((room) => {
                 this.setState({questions: room.questions});
                 this.setState({currectQuestion: this.state.questions[0]});
+                this.setState({name: room.name});
             });
     }
 
@@ -24,7 +26,7 @@ class Room extends Component {
     render() {
         return (
             <div className="Room">
-                <h1>Room {this.props.match.params.id}</h1>
+                <h1>Room {this.state.name}</h1>
                 <Question question={this.state.currectQuestion}/>
             </div>
         );

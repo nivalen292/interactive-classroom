@@ -5,8 +5,8 @@ const tokenGenerator = require('rand-token');
 const init = (db, data) => {
 
     const controller = {
-        getRoomById(request, response) {
-            return data.getRoomById(request.params.id)
+        getRoomByID(request, response) {
+            return data.getRoomByID(request.params.roomID)
                 .then((room) => response.json(room));
         },
 
@@ -14,6 +14,7 @@ const init = (db, data) => {
             const room = request.body;
             room.authKey = tokenGenerator.generate(32);
             room.questions = [];
+            room.roomID = tokenGenerator.generate(8);
             return data.createRoom(room)
                 .then((dbResponse) => {
                     if (dbResponse === null) {

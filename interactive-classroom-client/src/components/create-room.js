@@ -10,22 +10,21 @@ class CreateRoom extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            roomID: '',
+            name: '',
             password: ''
         }
     }
 
     createRoom() {
-        if (this.state.password === '' || this.state.roomID === '') {
-            NotificationManager.error('You must enter a RoomID and password first!', 'Okay!', 3000);
+        if (this.state.password === '' || this.state.name === '') {
+            NotificationManager.error('You must enter a name and password first!', 'Okay!', 3000);
             return;
         }
         post('http://localhost:5000/api/room', {
-            roomID: this.state.roomID,
+            name: this.state.name,
             password: sha256(this.state.password).toString()
         })
             .then((response) => {
-                console.log('here')
                 if (response.status === 409) {
                     NotificationManager.error('A room with that ID already exists', 'Okay!', 3000);
                 }
@@ -33,12 +32,12 @@ class CreateRoom extends Component {
                     NotificationManager.success('Room created, you can now log in as owner to modify it!', 'Success', 5000);
                 }
             });
-        this.setState({ roomID: '' });
+        this.setState({ name: '' });
         this.setState({ password: '' });
     }
 
-    updateRoomID(e) {
-        this.setState({ roomID: e.target.value });
+    updateName(e) {
+        this.setState({ name: e.target.value });
     }
 
     updatePassword(e) {
@@ -49,8 +48,8 @@ class CreateRoom extends Component {
 
         return (
             <div className="CreateRoom">
-                <label>RoomID</label>
-                <input value={this.state.roomID} onChange={this.updateRoomID.bind(this)} />
+                <label>Name</label>
+                <input value={this.state.name} onChange={this.updateName.bind(this)} />
                 <label>Password</label>
                 <input value={this.state.password} onChange={this.updatePassword.bind(this)} />
                 <button onClick={this.createRoom.bind(this)}>Create</button>

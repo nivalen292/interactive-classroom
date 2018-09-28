@@ -2,15 +2,21 @@ const init = (db) => {
     const objectId = require('mongodb').ObjectID;
     const roomCollection = db.collection('interactive-classroom-rooms');
 
-    const getRoomById = (id) => {
+    const getRoomByID = (id) => {
         return roomCollection
             .findOne({ roomID: id })
             .then((result) => Promise.resolve(result));
     }
 
+    const getRoomByName = (name) => {
+        return roomCollection
+            .findOne({ name: name })
+            .then((result) => Promise.resolve(result));
+    }
+
     const createRoom = (room) => {
-        return getRoomById(room.roomID)
-            .then((result) => Promise.resolve(result == null))
+        return getRoomByName(room.name)
+            .then((result) => Promise.resolve(result === null))
             .then((canCreate) => {
                 if (canCreate) {
                     return roomCollection
@@ -21,7 +27,7 @@ const init = (db) => {
     }
 
     const data = {
-        getRoomById,
+        getRoomByID,
         createRoom
     };
 
