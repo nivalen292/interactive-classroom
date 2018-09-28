@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import RoomForm from '../components/room-form';
+import CreateRoom from '../components/create-room';
 
 class Home extends Component {
   constructor(props) {
@@ -13,6 +14,8 @@ class Home extends Component {
     return (
       <div className="Home">
         <RoomForm />
+        <br />
+        <CreateRoom />
       </div>
     );
   }

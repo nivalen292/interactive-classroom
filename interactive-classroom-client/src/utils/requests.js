@@ -1,5 +1,5 @@
 const postRequest = (url, data) => {
-    fetch(url, {
+    return fetch(url, {
         method: 'POST',
         headers: {
             'Accept': 'application/json',

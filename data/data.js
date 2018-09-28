@@ -4,12 +4,25 @@ const init = (db) => {
 
     const getRoomById = (id) => {
         return roomCollection
-            .findOne({id: +id})
+            .findOne({ roomID: id })
             .then((result) => Promise.resolve(result));
+    }
+
+    const createRoom = (room) => {
+        return getRoomById(room.roomID)
+            .then((result) => Promise.resolve(result == null))
+            .then((canCreate) => {
+                if (canCreate) {
+                    return roomCollection
+                        .insert(room);
+                }
+                return null;
+            });
     }
 
     const data = {
         getRoomById,
+        createRoom
     };
 
     return Promise.resolve(data);
