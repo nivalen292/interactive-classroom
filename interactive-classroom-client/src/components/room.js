@@ -14,8 +14,9 @@ class Room extends Component {
         this.state = {
             name: '',
             questions: [],
-            currectQuestion: { text: '', answers: [] },
-            roomID: ''
+            currentQuestion: { text: '', answers: [] },
+            roomID: '',
+            showQuestionForm: false
         }
     }
 
@@ -23,7 +24,7 @@ class Room extends Component {
         get('http://localhost:5000/api/room/' + this.props.match.params.roomID)
             .then((room) => {
                 this.setState({ questions: room.questions });
-                this.setState({ currectQuestion: this.state.questions[0] });
+                this.setState({ currentQuestion: this.state.questions[0] });
                 this.setState({ name: room.name });
                 this.setState({ roomID: room.roomID });
             }).catch((error) => {
@@ -40,18 +41,37 @@ class Room extends Component {
         }
     }
 
+    toggleQuestionForm() {
+        this.setState({ showQuestionForm: !this.state.showQuestionForm });
+    }
+
+    showQuestionForm() {
+        if (this.state.showQuestionForm) {
+            return (<CreateQuestion style={this.state.questionFormStyle} addQuestion={this.addQuestion.bind(this)} />);
+        }
+    }
+
     showGuestContent() {
-        return (<Question question={this.state.currectQuestion} />);
+        return (<Question question={this.state.currentQuestion} />);
     }
 
     showOwnerContent() {
         return (
             <div>
                 <h2>Questions</h2>
-                {this.state.questions.map((q, index) => <p key={index}>{q.text}</p>)}
-                <button>Create New Question</button>
-                -------
-                <CreateQuestion addQuestion={this.addQuestion.bind(this)} />
+                {this.state.questions.map((q, index) => {
+                    return (
+                        <div key={index}>
+                            <p>{q.text}</p>
+                            <button>Display</button>
+                            <button>Modify</button>
+                            <button>Remove</button>
+                        </div>
+                    );
+                })}
+                <button onClick={this.toggleQuestionForm.bind(this)}>New Question Form</button>
+                <br />
+                {this.showQuestionForm()}
             </div>
         );
     }
@@ -72,6 +92,8 @@ class Room extends Component {
                 }
             });
         // hide question form
+        this.setState({ showQuestionForm: !this.state.showQuestionForm });
+
         this.setState({ questions: [...this.state.questions, question] });
     }
 
