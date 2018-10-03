@@ -5,6 +5,8 @@ const attachTo = (app, db, data) => {
 
     app.put('/api/room', controller.getRoomByNameWhenJoining);
 
+    app.put('/api/room/:roomID/questions', controller.addQuestion);
+
     app.post('/api/room', controller.createRoom);
 };
 

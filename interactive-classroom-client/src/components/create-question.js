@@ -31,9 +31,22 @@ class CreateQuestion extends Component {
     addAnswer(a) {
         if (a.trim() === '') {
             NotificationManager.error('Please enter a value!', 'Error', 5000);
+            return;
         }
         this.setState({ answers: [...this.state.answers, a] });
         this.setState({ answerInput: '' });
+    }
+
+    addQuestion() {
+        if (this.state.textInput.trim() === '') {
+            NotificationManager.error('Please fill in all values!', 'Error', 5000);
+            return;
+        }
+        if (this.state.answers.length < 2) {
+            NotificationManager.error('You must add atleast 2 answers!', 'Error', 5000);
+            return;
+        }
+        this.props.addQuestion({ text: this.state.textInput, answers: this.state.answers });
     }
 
 
@@ -55,6 +68,8 @@ class CreateQuestion extends Component {
                 <h3>Add Answer: </h3>
                 <input value={this.state.answerInput} onChange={this.updateAnswerInput.bind(this)} />
                 <button onClick={() => this.addAnswer(this.state.answerInput)}>Add Answer</button>
+                <br />
+                <button onClick={this.addQuestion.bind(this)}>Save</button>
                 <NotificationContainer />
             </div>
         );

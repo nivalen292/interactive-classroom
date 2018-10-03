@@ -49,7 +49,7 @@ class Room extends Component {
                 {this.state.questions.map((q, index) => <p key={index}>{q.text}</p>)}
                 <button>Create New Question</button>
                 -------
-                <CreateQuestion />
+                <CreateQuestion addQuestion={this.addQuestion.bind(this)}/>
             </div>
         );
     }
@@ -61,8 +61,10 @@ class Room extends Component {
         return this.showGuestContent();
     }
 
-    addQuestion() {
-
+    addQuestion(question) {
+        // update db
+        // hide question form
+        this.setState({questions: [...this.state.questions, question]});
     }
 
 

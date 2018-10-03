@@ -26,10 +26,20 @@ const init = (db) => {
             });
     }
 
+    const addQuestionToRoom = (roomID, question) => {
+        return roomCollection
+            .update(
+                { roomID: roomID },
+                { $push: { questions: question } }
+            )
+            .then(() => Promise.resolve());
+    }
+
     const data = {
         getRoomByID,
         createRoom,
-        getRoomByName
+        getRoomByName,
+        addQuestionToRoom
     };
 
     return Promise.resolve(data);

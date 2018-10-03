@@ -42,6 +42,14 @@ const init = (db, data) => {
                     return response.status(201).json('Created!');
                 });
 
+        },
+
+        addQuestion(request, response) {
+            console.log(request.body);
+            // return data.addQuestionToRoom(request.body.roomID, request.body.question)
+            //     .then(() => {
+            //         return response.status(201).json('Added question!');
+            //     });
         }
     }
     return controller;
