@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { getRequest as get } from '../utils/requests';
 import Question from '../components/question';
+import CreateQuestion from './create-question';
 import socketIOClient from 'socket.io-client';
 
 // react notifications
@@ -37,12 +38,39 @@ class Room extends Component {
         }
     }
 
+    showGuestContent() {
+        return (<Question question={this.state.currectQuestion}/>);
+    }
+
+    showOwnerContent() {
+        return (
+            <div>
+                <h2>Questions</h2>
+                {this.state.questions.map((q, index) => <p key={index}>{q.text}</p>)}
+                <button>Create New Question</button>
+                -------
+                <CreateQuestion />
+            </div>
+        );
+    }
+
+    showContent() {
+        if (this.isAuthenticated()) {
+            return this.showOwnerContent();
+        }
+        return this.showGuestContent();
+    }
+
+    addQuestion() {
+
+    }
+
 
     render() {
         return (
             <div className="Room">
                 <h1>Room: {this.state.name}</h1>
-                <Question question={this.state.currectQuestion}/>
+                {this.showContent()}
                 <NotificationContainer/>
             </div>
         );

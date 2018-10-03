@@ -19,7 +19,7 @@ class OwnerForm extends Component {
     }
 
     joinRoom() {
-        if (this.state.password === '' || this.state.name === '') {
+        if (this.state.password.trim() === '' || this.state.name.trim() === '') {
             NotificationManager.error('You must enter a name and password first!', 'Error!', 3000);
             return;
         }
