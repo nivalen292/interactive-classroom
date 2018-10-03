@@ -49,9 +49,8 @@ class Room extends Component {
         this.setState({ showCreateQuestionForm: !this.state.showCreateQuestionForm });
     }
 
-    toggleModifyQuestionForm(question) {
-        const result = this.state.questionToModify === null ? question : null;
-        this.setState({ questionToModify: result });
+    toggleModifyQuestionForm(questionIndex) {
+        const result = this.state.questionIndexToModify === -1 ? questionIndex : -1;
         this.setState({ questionIndexToModify: result });
     }
 
@@ -62,8 +61,9 @@ class Room extends Component {
     }
 
     showModifyQuestionForm() {
-        if (this.state.questionToModify !== null) {
-            return (<ModifyQuestion question={this.state.questionToModify} modifyQuestion={this.modifyQuestion.bind(this)} />);
+        const index = this.state.questionIndexToModify;
+        if (index >= 0 && index < this.state.questions.length) {
+            return (<ModifyQuestion questionIndex={index} question={this.state.questions[this.state.questionIndexToModify]} modifyQuestion={this.modifyQuestion.bind(this)} />);
         }
     }
 
@@ -80,7 +80,7 @@ class Room extends Component {
                         <div key={index}>
                             <p>{q.text}</p>
                             <button>Display</button>
-                            <button onClick={() => this.toggleModifyQuestionForm(this.state.questions[index])}>Modify</button>
+                            <button onClick={() => this.toggleModifyQuestionForm(index)}>Modify</button>
                             <button>Remove</button>
                         </div>
                     );
@@ -100,14 +100,19 @@ class Room extends Component {
         return this.showGuestContent();
     }
 
-    modifyQuestion(question) {
+    modifyQuestion(question, questionIndex) {
         // update db
-        put('http://localhost:5000/api/room/' + this.state.roomID + '/questions', { roomID: this.state.roomID, question: question })
+        put('http://localhost:5000/api/room/' + this.state.roomID + '/questions',
+            { roomID: this.state.roomID, question: question, questionIndex: questionIndex })
             .then((response) => {
                 if (response.status === 200) {
-                    NotificationManager.success('Added Question!', 'Success!', 3000);
+                    NotificationManager.success('Modified Question!', 'Success!', 3000);
                 }
             });
+        // hide form
+        this.setState({ questionIndexToModify: -1});
+
+        // not updating locally until a request is made
     }
 
     addQuestion(question) {
@@ -118,9 +123,10 @@ class Room extends Component {
                     NotificationManager.success('Added Question!', 'Success!', 3000);
                 }
             });
-        // hide question form
-        this.setState({ showCreateQuestionForm: !this.state.showCreateQuestionForm });
+        // hide form
+        this.setState({ showCreateQuestionForm: false });
 
+        // updating local state
         this.setState({ questions: [...this.state.questions, question] });
     }
 

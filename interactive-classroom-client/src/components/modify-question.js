@@ -52,7 +52,7 @@ class ModifyQuestion extends Component {
             NotificationManager.error('You must have atleast one correct answer!', 'Error', 5000);
             return;
         }
-        this.props.modifyQuestion({ text: this.state.textInput, answers: this.state.answers });
+        this.props.modifyQuestion({ text: this.state.textInput, answers: this.state.answers }, this.props.questionIndex);
     }
 
 

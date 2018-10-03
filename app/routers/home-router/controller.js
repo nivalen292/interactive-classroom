@@ -52,11 +52,10 @@ const init = (db, data) => {
         },
 
         modifyQuestion(request, response) {
-            console.log(request.body);
-            // return data.addQuestionToRoom(request.body.roomID, request.body.question)
-            //     .then(() => {
-            //         return response.status(200).json('Added question!');
-            //     });
+            return data.modifyQuestionInRoom(request.body.roomID, request.body.questionIndex, request.body.question)
+                .then(() => {
+                    return response.status(200).json('Added question!');
+                });
         }
     }
     return controller;
