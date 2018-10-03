@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { getRequest as get, postRequest as post } from '../utils/requests';
 import Question from '../components/question';
 import CreateQuestion from './create-question';
+import ModifyQuestion from './modify-question';
 import socketIOClient from 'socket.io-client';
 
 // react notifications
@@ -16,7 +17,9 @@ class Room extends Component {
             questions: [],
             currentQuestion: { text: '', answers: [] },
             roomID: '',
-            showQuestionForm: false
+            showCreateQuestionForm: false,
+            showModifyQuestionForm: false,
+            questionToModify: null
         }
     }
 
@@ -41,13 +44,24 @@ class Room extends Component {
         }
     }
 
-    toggleQuestionForm() {
-        this.setState({ showQuestionForm: !this.state.showQuestionForm });
+    toggleCreateQuestionForm() {
+        this.setState({ showCreateQuestionForm: !this.state.showCreateQuestionForm });
     }
 
-    showQuestionForm() {
-        if (this.state.showQuestionForm) {
-            return (<CreateQuestion style={this.state.questionFormStyle} addQuestion={this.addQuestion.bind(this)} />);
+    toggleModifyQuestionForm(question) {
+        const result = this.state.questionToModify === null ? question : null;
+        this.setState({ questionToModify: result });
+    }
+
+    showCreateQuestionForm() {
+        if (this.state.showCreateQuestionForm) {
+            return (<CreateQuestion addQuestion={this.addQuestion.bind(this)} />);
+        }
+    }
+    
+    showModifyQuestionForm() {
+        if (this.state.questionToModify !== null) {
+            return (<ModifyQuestion question={this.state.questionToModify} modifyQuestion={this.modifyQuestion.bind(this)} />);
         }
     }
 
@@ -64,14 +78,15 @@ class Room extends Component {
                         <div key={index}>
                             <p>{q.text}</p>
                             <button>Display</button>
-                            <button>Modify</button>
+                            <button onClick={() => this.toggleModifyQuestionForm(this.state.questions[index])}>Modify</button>
                             <button>Remove</button>
                         </div>
                     );
                 })}
-                <button onClick={this.toggleQuestionForm.bind(this)}>New Question Form</button>
+                <button onClick={this.toggleCreateQuestionForm.bind(this)}>New Question Form</button>
                 <br />
-                {this.showQuestionForm()}
+                {this.showCreateQuestionForm()}
+                {this.showModifyQuestionForm()}
             </div>
         );
     }
@@ -83,6 +98,10 @@ class Room extends Component {
         return this.showGuestContent();
     }
 
+    modifyQuestion(question) {
+
+    }
+
     addQuestion(question) {
         // update db
         post('http://localhost:5000/api/room/' + this.state.roomID + '/questions', { question: question, roomID: this.state.roomID })
@@ -92,7 +111,7 @@ class Room extends Component {
                 }
             });
         // hide question form
-        this.setState({ showQuestionForm: !this.state.showQuestionForm });
+        this.setState({ showCreateQuestionForm: !this.state.showCreateQuestionForm });
 
         this.setState({ questions: [...this.state.questions, question] });
     }
