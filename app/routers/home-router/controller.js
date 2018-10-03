@@ -49,6 +49,14 @@ const init = (db, data) => {
                 .then(() => {
                     return response.status(201).json('Added question!');
                 });
+        },
+
+        modifyQuestion(request, response) {
+            console.log(request.body);
+            // return data.addQuestionToRoom(request.body.roomID, request.body.question)
+            //     .then(() => {
+            //         return response.status(200).json('Added question!');
+            //     });
         }
     }
     return controller;

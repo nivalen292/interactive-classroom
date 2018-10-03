@@ -35,11 +35,23 @@ const init = (db) => {
             .then(() => Promise.resolve());
     }
 
+    const modifyQuestionInRoom = (roomID, questionIndex, question) => {
+        return roomCollection
+            .findOne({ roomID: roomID })
+            .then((room) => {
+                room.questions[questionIndex] = question;
+                return roomCollection
+                    .replaceOne({ roomID: roomID }, room)
+                    .then(() => Promise.resolve());
+            })
+    }
+
     const data = {
         getRoomByID,
         createRoom,
         getRoomByName,
-        addQuestionToRoom
+        addQuestionToRoom,
+        modifyQuestionInRoom
     };
 
     return Promise.resolve(data);

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { getRequest as get, postRequest as post } from '../utils/requests';
+import { getRequest as get, postRequest as post, putRequest as put } from '../utils/requests';
 import Question from '../components/question';
 import CreateQuestion from './create-question';
 import ModifyQuestion from './modify-question';
@@ -19,7 +19,8 @@ class Room extends Component {
             roomID: '',
             showCreateQuestionForm: false,
             showModifyQuestionForm: false,
-            questionToModify: null
+            questionToModify: null,
+            questionIndexToModify: -1
         }
     }
 
@@ -51,6 +52,7 @@ class Room extends Component {
     toggleModifyQuestionForm(question) {
         const result = this.state.questionToModify === null ? question : null;
         this.setState({ questionToModify: result });
+        this.setState({ questionIndexToModify: result });
     }
 
     showCreateQuestionForm() {
@@ -58,7 +60,7 @@ class Room extends Component {
             return (<CreateQuestion addQuestion={this.addQuestion.bind(this)} />);
         }
     }
-    
+
     showModifyQuestionForm() {
         if (this.state.questionToModify !== null) {
             return (<ModifyQuestion question={this.state.questionToModify} modifyQuestion={this.modifyQuestion.bind(this)} />);
@@ -99,7 +101,13 @@ class Room extends Component {
     }
 
     modifyQuestion(question) {
-
+        // update db
+        put('http://localhost:5000/api/room/' + this.state.roomID + '/questions', { roomID: this.state.roomID, question: question })
+            .then((response) => {
+                if (response.status === 200) {
+                    NotificationManager.success('Added Question!', 'Success!', 3000);
+                }
+            });
     }
 
     addQuestion(question) {
