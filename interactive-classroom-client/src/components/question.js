@@ -16,7 +16,7 @@ class Question extends Component {
 
     getQuestionAnswers() {
         if (this.props.question) {
-            return this.props.question.answers.map((ans, i) => <li key={i}>{ans}</li>);
+            return this.props.question.answers.map((ans, i) => <li key={i}>{ans.text}</li>);
         }
         return 'No answers';
     }

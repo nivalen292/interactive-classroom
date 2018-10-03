@@ -29,7 +29,7 @@ class CreateQuestion extends Component {
     }
 
     addAnswer(a) {
-        if (a.trim() === '') {
+        if (a.text.trim() === '') {
             NotificationManager.error('Please enter a value!', 'Error', 5000);
             return;
         }
@@ -46,6 +46,12 @@ class CreateQuestion extends Component {
             NotificationManager.error('You must add atleast 2 answers!', 'Error', 5000);
             return;
         }
+        const hasCorrectAnswer = this.state.answers.some((answer) => answer.correct)
+
+        if (!hasCorrectAnswer) {
+            NotificationManager.error('You must have atleast one correct answer!', 'Error', 5000);
+            return;
+        }
         this.props.addQuestion({ text: this.state.textInput, answers: this.state.answers });
     }
 
@@ -60,14 +66,16 @@ class CreateQuestion extends Component {
                 {this.state.answers.map((a, index) => {
                     return (
                         <div key={index}>
-                            <p>{a}</p>
+                            <p>{a.text} : {a.correct ? 'Correct' : 'Wrong'}</p>
                             <button onClick={() => this.removeAnswer(index)}>Remove Answer</button>
                         </div>
                     );
                 })}
                 <h3>Add Answer: </h3>
                 <input value={this.state.answerInput} onChange={this.updateAnswerInput.bind(this)} />
-                <button onClick={() => this.addAnswer(this.state.answerInput)}>Add Answer</button>
+                <span>Correct?</span>
+                <input type="checkbox" ref="correctCheckBox" />
+                <button onClick={() => this.addAnswer({ text: this.state.answerInput, correct: this.refs.correctCheckBox.checked })}>Add Answer</button>
                 <br />
                 <button onClick={this.addQuestion.bind(this)}>Save</button>
                 <NotificationContainer />

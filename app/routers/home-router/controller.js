@@ -45,11 +45,10 @@ const init = (db, data) => {
         },
 
         addQuestion(request, response) {
-            console.log(request.body);
-            // return data.addQuestionToRoom(request.body.roomID, request.body.question)
-            //     .then(() => {
-            //         return response.status(201).json('Added question!');
-            //     });
+            return data.addQuestionToRoom(request.body.roomID, request.body.question)
+                .then(() => {
+                    return response.status(201).json('Added question!');
+                });
         }
     }
     return controller;
