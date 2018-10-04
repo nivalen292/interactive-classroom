@@ -52,7 +52,7 @@ class CreateQuestion extends Component {
             NotificationManager.error('You must have atleast one correct answer!', 'Error', 5000);
             return;
         }
-        this.props.addQuestion({ text: this.state.textInput, answers: this.state.answers, score: 0 });
+        this.props.addQuestion({ text: this.state.textInput, answers: this.state.answers });
     }
 
 
@@ -75,7 +75,7 @@ class CreateQuestion extends Component {
                 <input value={this.state.answerInput} onChange={this.updateAnswerInput.bind(this)} />
                 <span>Correct?</span>
                 <input type="checkbox" ref="correctCheckBox" />
-                <button onClick={() => this.addAnswer({ text: this.state.answerInput, correct: this.refs.correctCheckBox.checked })}>Add Answer</button>
+                <button onClick={() => this.addAnswer({ text: this.state.answerInput, correct: this.refs.correctCheckBox.checked, score: 0 })}>Add Answer</button>
                 <br />
                 <button onClick={this.addQuestion.bind(this)}>Save</button>
                 <NotificationContainer />
