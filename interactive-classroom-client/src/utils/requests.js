@@ -22,14 +22,24 @@ const putRequest = (url, data) => {
 
 const getRequest = (url) => {
     return fetch(url, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            }
-        })
-            .then((response) => response.json())
-            .then((data) => Promise.resolve(data))
-            .catch((err) => console.log(err));
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        }
+    })
+        .then((response) => response.json())
+        .then((data) => Promise.resolve(data))
+        .catch((err) => console.log(err));
 }
 
-export { postRequest, getRequest, putRequest };
+const deleteRequest = (url) => {
+    return fetch(url, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        }
+    });
+}
+
+export { postRequest, getRequest, putRequest, deleteRequest };

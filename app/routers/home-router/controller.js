@@ -56,6 +56,13 @@ const init = (db, data) => {
                 .then(() => {
                     return response.status(200).json('Added question!');
                 });
+        },
+
+        removeQuestion(request, response) {
+            return data.removeQuestion(request.params.roomID, request.params.questionIndex)
+                .then(() => {
+                    return response.status(200).json('Removed question!');
+                })
         }
     }
     return controller;

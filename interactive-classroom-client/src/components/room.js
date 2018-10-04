@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { getRequest as get, postRequest as post, putRequest as put } from '../utils/requests';
+import { getRequest as get, postRequest as post, putRequest as put, deleteRequest as del } from '../utils/requests';
 import Question from '../components/question';
 import CreateQuestion from './create-question';
 import ModifyQuestion from './modify-question';
@@ -81,7 +81,7 @@ class Room extends Component {
                             <p>{q.text}</p>
                             <button>Display</button>
                             <button onClick={() => this.toggleModifyQuestionForm(index)}>Modify</button>
-                            <button>Remove</button>
+                            <button onClick={() => this.removeQuestion(index)}>Remove</button>
                         </div>
                     );
                 })}
@@ -128,6 +128,21 @@ class Room extends Component {
 
         // updating local state
         this.setState({ questions: [...this.state.questions, question] });
+    }
+
+    removeQuestion(questionIndex) {
+        // update db
+        del('http://localhost:5000/api/room/' + this.state.roomID + '/questions/' + questionIndex)
+            .then((response) => {
+                if (response.status === 200) {
+                    NotificationManager.success('Deleted Question!', 'Success!', 3000);
+                }
+            })
+
+        // update local state
+        const newArr = this.state.questions.slice(0);
+        newArr.splice(questionIndex, 1);
+        this.setState({ questions: newArr });
     }
 
 

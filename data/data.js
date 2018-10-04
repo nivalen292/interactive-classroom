@@ -46,12 +46,24 @@ const init = (db) => {
             })
     }
 
+    const removeQuestion = (roomID, questionIndex) => {
+        return roomCollection
+            .findOne( { roomID: roomID })
+            .then((room) => {
+                room.questions.splice(questionIndex, 1);
+                return roomCollection
+                    .replaceOne({ roomID: roomID }, room)
+                    .then(() => Promise.resolve());
+            })
+    }
+
     const data = {
         getRoomByID,
         createRoom,
         getRoomByName,
         addQuestionToRoom,
-        modifyQuestionInRoom
+        modifyQuestionInRoom,
+        removeQuestion
     };
 
     return Promise.resolve(data);
