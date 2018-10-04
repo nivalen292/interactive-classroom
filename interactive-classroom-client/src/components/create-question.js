@@ -52,7 +52,7 @@ class CreateQuestion extends Component {
             NotificationManager.error('You must have atleast one correct answer!', 'Error', 5000);
             return;
         }
-        this.props.addQuestion({ text: this.state.textInput, answers: this.state.answers });
+        this.props.addQuestion({ text: this.state.textInput, answers: this.state.answers, score: 0 });
     }
 
 
