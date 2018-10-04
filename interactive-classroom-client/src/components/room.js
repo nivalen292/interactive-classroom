@@ -20,7 +20,8 @@ class Room extends Component {
             showCreateQuestionForm: false,
             showModifyQuestionForm: false,
             questionToModify: null,
-            questionIndexToModify: -1
+            questionIndexToModify: -1,
+            endpoint: 'http://localhost:5000'
         }
     }
 
@@ -79,7 +80,7 @@ class Room extends Component {
                     return (
                         <div key={index}>
                             <p>{q.text}</p>
-                            <button>Display</button>
+                            <button onClick={() => this.triggerUpdateCurrentQuestion(this.state.questions[index])}>Display Question</button>
                             <button onClick={() => this.toggleModifyQuestionForm(index)}>Modify</button>
                             <button onClick={() => this.removeQuestion(index)}>Remove</button>
                         </div>
@@ -110,7 +111,7 @@ class Room extends Component {
                 }
             });
         // hide form
-        this.setState({ questionIndexToModify: -1});
+        this.setState({ questionIndexToModify: -1 });
 
         // not updating locally until a request is made
     }
@@ -145,8 +146,17 @@ class Room extends Component {
         this.setState({ questions: newArr });
     }
 
+    triggerUpdateCurrentQuestion(question) {
+        const socket = socketIOClient(this.state.endpoint);
+        socket.emit('change-question', question);
+    }
+
 
     render() {
+        const socket = socketIOClient(this.state.endpoint);
+        socket.on('change-question', (question) => {
+            this.setState({ currentQuestion: question });
+        });
         return (
             <div className="Room">
                 <h1>Room: {this.state.name}</h1>

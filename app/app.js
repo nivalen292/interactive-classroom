@@ -37,6 +37,9 @@ const init = (data) => {
     io.sockets.on('connection', function (socket) {
         socket.on('disconnect', function (someData) {
         });
+        socket.on('change-question', (data) => {
+            io.emit('change-question', data);
+        })
     });
 
     return Promise.resolve(server);
