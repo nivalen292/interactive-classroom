@@ -26,6 +26,10 @@ class Room extends Component {
     }
 
     componentDidMount() {
+        const socket = socketIOClient(this.state.endpoint);
+        socket.on('change-question', (question) => {
+            this.setState({ currentQuestion: question });
+        });
         get('http://localhost:5000/api/room/' + this.props.match.params.roomID)
             .then((room) => {
                 this.setState({ questions: room.questions });
@@ -157,10 +161,7 @@ class Room extends Component {
 
 
     render() {
-        const socket = socketIOClient(this.state.endpoint);
-        socket.on('change-question', (question) => {
-            this.setState({ currentQuestion: question });
-        });
+        
         return (
             <div className="Room">
                 <h1>Room: {this.state.name}</h1>
