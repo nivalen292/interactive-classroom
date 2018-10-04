@@ -34,6 +34,7 @@ const init = (db, data) => {
             room.authKey = tokenGenerator.generate(32);
             room.questions = [];
             room.roomID = tokenGenerator.generate(8);
+            room.currentQuestion = { text: '', answers: [] };
             return data.createRoom(room)
                 .then((dbResponse) => {
                     if (dbResponse === null) {
@@ -63,6 +64,13 @@ const init = (db, data) => {
                 .then(() => {
                     return response.status(200).json('Removed question!');
                 })
+        },
+
+        updateCurrentQuestion(request, response) {
+            return data.updateCurrentQuestion(request.body.roomID, request.body.question)
+                .then(() => {
+                    return response.status(200).json('Updated current question!');
+                });
         }
     }
     return controller;

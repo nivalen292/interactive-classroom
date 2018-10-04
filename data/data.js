@@ -43,18 +43,29 @@ const init = (db) => {
                 return roomCollection
                     .replaceOne({ roomID: roomID }, room)
                     .then(() => Promise.resolve());
-            })
+            });
     }
 
     const removeQuestion = (roomID, questionIndex) => {
         return roomCollection
-            .findOne( { roomID: roomID })
+            .findOne({ roomID: roomID })
             .then((room) => {
                 room.questions.splice(questionIndex, 1);
                 return roomCollection
                     .replaceOne({ roomID: roomID }, room)
                     .then(() => Promise.resolve());
-            })
+            });
+    }
+
+    const updateCurrentQuestion = (roomID, question) => {
+        return roomCollection
+            .findOne({ roomID: roomID })
+            .then((room) => {
+                room.currentQuestion = question;
+                return roomCollection
+                    .replaceOne({ roomID: roomID }, room)
+                    .then(() => Promise.resolve());
+            });
     }
 
     const data = {
@@ -63,7 +74,8 @@ const init = (db) => {
         getRoomByName,
         addQuestionToRoom,
         modifyQuestionInRoom,
-        removeQuestion
+        removeQuestion,
+        updateCurrentQuestion
     };
 
     return Promise.resolve(data);

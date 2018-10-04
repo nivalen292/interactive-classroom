@@ -9,6 +9,8 @@ const attachTo = (app, db, data) => {
     
     app.post('/api/room/:roomID/questions', controller.addQuestion);
 
+    app.put('/api/room/:roomID/current-question', controller.updateCurrentQuestion);
+
     app.put('/api/room/:roomID/questions', controller.modifyQuestion);
 
     app.delete('/api/room/:roomID/questions/:questionIndex', controller.removeQuestion);

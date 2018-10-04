@@ -8,14 +8,14 @@ class Question extends Component {
     }
 
     getQuestionText() {
-        if (this.props.question) {
+        if (this.props.question.text.trim().length > 0) {
             return this.props.question.text;
         }
         return 'No question';
     }
 
     getQuestionAnswers() {
-        if (this.props.question) {
+        if (this.props.question.answers.length > 0) {
             return this.props.question.answers.map((ans, i) => <li key={i}>{ans.text}</li>);
         }
         return 'No answers';

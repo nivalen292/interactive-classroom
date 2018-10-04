@@ -29,7 +29,7 @@ class Room extends Component {
         get('http://localhost:5000/api/room/' + this.props.match.params.roomID)
             .then((room) => {
                 this.setState({ questions: room.questions });
-                this.setState({ currentQuestion: this.state.questions[0] });
+                this.setState({ currentQuestion: room.currentQuestion === null ? { text: '', answers: [] } : room.currentQuestion });
                 this.setState({ name: room.name });
                 this.setState({ roomID: room.roomID });
             }).catch((error) => {
@@ -149,6 +149,10 @@ class Room extends Component {
     triggerUpdateCurrentQuestion(question) {
         const socket = socketIOClient(this.state.endpoint);
         socket.emit('change-question', question);
+        put('http://localhost:5000/api/room/' + this.state.roomID + '/current-question', {
+            question: question,
+            roomID: this.state.roomID
+        });
     }
 
 
