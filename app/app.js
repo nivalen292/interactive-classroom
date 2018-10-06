@@ -26,7 +26,7 @@ const init = (data) => {
     }
 
     app.use('/', express.static('interactive-classroom-client/build'));
-    
+
     require('./routers')
         .attachTo(app, db, data);
 
@@ -37,8 +37,11 @@ const init = (data) => {
     io.sockets.on('connection', function (socket) {
         socket.on('disconnect', function (someData) {
         });
+        socket.on('join', function (data) {
+            socket.join(data.roomID);
+        });
         socket.on('change-question', (data) => {
-            io.emit('change-question', data);
+            io.to(data.roomID).emit('change-question', data.questionIndex);
         })
     });
 

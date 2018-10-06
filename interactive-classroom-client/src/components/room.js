@@ -30,15 +30,21 @@ class Room extends Component {
         socket.on('change-question', (index) => {
             this.setState({ currentQuestion: this.state.questions[index] });
         });
+
         get('http://localhost:5000/api/room/' + this.props.match.params.roomID)
             .then((room) => {
                 this.setState({ questions: room.questions });
                 this.setState({ currentQuestion: room.currentQuestion === null ? { text: '', answers: [] } : room.currentQuestion });
                 this.setState({ name: room.name });
                 this.setState({ roomID: room.roomID });
+                socket.emit('join', { roomID: this.state.roomID });
             }).catch((error) => {
                 NotificationManager.error('No room with ID: ' + this.props.match.params.roomID + ' exists!', 'Okay!', 3000);
             });
+    }
+
+    componentWillUnmount() {
+
     }
 
     isAuthenticated() {
@@ -73,7 +79,7 @@ class Room extends Component {
     }
 
     showGuestContent() {
-        return (<Question question={this.state.currentQuestion || {text: '', answers: [], score: 0}} />);
+        return (<Question question={this.state.currentQuestion || { text: '', answers: [], score: 0 }} />);
     }
 
     showOwnerContent() {
@@ -152,7 +158,9 @@ class Room extends Component {
 
     triggerUpdateCurrentQuestion(index) {
         const socket = socketIOClient(this.state.endpoint);
-        socket.emit('change-question', index);
+        socket.emit('change-question', { questionIndex: index, roomID: this.state.roomID });
+
+        // update db too to keep changes
         put('http://localhost:5000/api/room/' + this.state.roomID + '/current-question', {
             questionIndex: index,
             roomID: this.state.roomID
@@ -161,7 +169,7 @@ class Room extends Component {
 
 
     render() {
-        
+
         return (
             <div className="Room">
                 <h1>Room: {this.state.name}</h1>
