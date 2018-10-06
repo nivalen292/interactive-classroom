@@ -57,11 +57,16 @@ const init = (db) => {
             });
     }
 
-    const updateCurrentQuestion = (roomID, question) => {
+    const updateCurrentQuestion = (roomID, questionIndex) => {
         return roomCollection
             .findOne({ roomID: roomID })
             .then((room) => {
-                room.currentQuestion = question;
+                try {
+                    room.currentQuestion = room.questions[questionIndex];
+                }
+                catch (e) {
+                    room.currentQuestion = null;
+                }
                 return roomCollection
                     .replaceOne({ roomID: roomID }, room)
                     .then(() => Promise.resolve());

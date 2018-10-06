@@ -67,7 +67,7 @@ const init = (db, data) => {
         },
 
         updateCurrentQuestion(request, response) {
-            return data.updateCurrentQuestion(request.body.roomID, request.body.question)
+            return data.updateCurrentQuestion(request.body.roomID, request.body.questionIndex)
                 .then(() => {
                     return response.status(200).json('Updated current question!');
                 });

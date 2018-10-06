@@ -27,8 +27,8 @@ class Room extends Component {
 
     componentDidMount() {
         const socket = socketIOClient(this.state.endpoint);
-        socket.on('change-question', (question) => {
-            this.setState({ currentQuestion: question });
+        socket.on('change-question', (index) => {
+            this.setState({ currentQuestion: this.state.questions[index] });
         });
         get('http://localhost:5000/api/room/' + this.props.match.params.roomID)
             .then((room) => {
@@ -73,7 +73,7 @@ class Room extends Component {
     }
 
     showGuestContent() {
-        return (<Question question={this.state.currentQuestion} />);
+        return (<Question question={this.state.currentQuestion || {text: '', answers: [], score: 0}} />);
     }
 
     showOwnerContent() {
@@ -84,7 +84,7 @@ class Room extends Component {
                     return (
                         <div key={index}>
                             <p>{q.text}</p>
-                            <button onClick={() => this.triggerUpdateCurrentQuestion(this.state.questions[index])}>Display Question</button>
+                            <button onClick={() => this.triggerUpdateCurrentQuestion(index)}>Display Question</button>
                             <button onClick={() => this.toggleModifyQuestionForm(index)}>Modify</button>
                             <button onClick={() => this.removeQuestion(index)}>Remove</button>
                         </div>
@@ -150,11 +150,11 @@ class Room extends Component {
         this.setState({ questions: newArr });
     }
 
-    triggerUpdateCurrentQuestion(question) {
+    triggerUpdateCurrentQuestion(index) {
         const socket = socketIOClient(this.state.endpoint);
-        socket.emit('change-question', question);
+        socket.emit('change-question', index);
         put('http://localhost:5000/api/room/' + this.state.roomID + '/current-question', {
-            question: question,
+            questionIndex: index,
             roomID: this.state.roomID
         });
     }
