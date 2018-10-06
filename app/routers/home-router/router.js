@@ -11,6 +11,8 @@ const attachTo = (app, db, data) => {
 
     app.put('/api/room/:roomID/current-question', controller.updateCurrentQuestion);
 
+    app.put('/api/room/:roomID/current-question/:answerIndex', controller.receiveAnswer);
+    
     app.put('/api/room/:roomID/questions', controller.modifyQuestion);
 
     app.delete('/api/room/:roomID/questions/:questionIndex', controller.removeQuestion);

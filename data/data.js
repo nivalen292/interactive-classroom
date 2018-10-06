@@ -73,6 +73,19 @@ const init = (db) => {
             });
     }
 
+    const receiveAnswer = (roomID, answerIndex) => {
+        return roomCollection
+            .findOne({ roomID: roomID })
+            .then((room) => {
+                // check for error if index is -1
+                const currentQuestionIndex = room.questions.findIndex((q) => q.text === room.currentQuestion.text);
+                room.questions[currentQuestionIndex].answers[answerIndex].score++;
+                return roomCollection
+                    .replaceOne({ roomID: roomID }, room)
+                    .then(() => Promise.resolve());
+            });
+    }
+
     const data = {
         getRoomByID,
         createRoom,
@@ -80,7 +93,8 @@ const init = (db) => {
         addQuestionToRoom,
         modifyQuestionInRoom,
         removeQuestion,
-        updateCurrentQuestion
+        updateCurrentQuestion,
+        receiveAnswer
     };
 
     return Promise.resolve(data);

@@ -79,7 +79,7 @@ class Room extends Component {
     }
 
     showGuestContent() {
-        return (<Question question={this.state.currentQuestion || { text: '', answers: [], score: 0 }} />);
+        return (<Question roomID={this.state.roomID} question={this.state.currentQuestion || { text: '', answers: [], score: 0 }} />);
     }
 
     showOwnerContent() {
@@ -90,9 +90,10 @@ class Room extends Component {
                     return (
                         <div key={index}>
                             <p>{q.text}</p>
-                            <button onClick={() => this.triggerUpdateCurrentQuestion(index)}>Display Question</button>
+                            <button onClick={() => this.triggerUpdateCurrentQuestion(index)}>Display</button>
                             <button onClick={() => this.toggleModifyQuestionForm(index)}>Modify</button>
                             <button onClick={() => this.removeQuestion(index)}>Remove</button>
+                            <button>Results</button>
                         </div>
                     );
                 })}

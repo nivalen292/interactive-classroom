@@ -71,6 +71,13 @@ const init = (db, data) => {
                 .then(() => {
                     return response.status(200).json('Updated current question!');
                 });
+        },
+
+        receiveAnswer(request, response) {
+            return data.receiveAnswer(request.params.roomID, request.params.answerIndex)
+                .then(() => {
+                    return response.status(200).json('Answer submitted!');
+                });
         }
     }
     return controller;
