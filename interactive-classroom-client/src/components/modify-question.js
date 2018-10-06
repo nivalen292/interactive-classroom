@@ -75,7 +75,7 @@ class ModifyQuestion extends Component {
                 <input value={this.state.answerInput} onChange={this.updateAnswerInput.bind(this)} />
                 <span>Correct?</span>
                 <input type="checkbox" ref="correctCheckBox" />
-                <button onClick={() => this.addAnswer({ text: this.state.answerInput, correct: this.refs.correctCheckBox.checked })}>Add Answer</button>
+                <button onClick={() => this.addAnswer({ text: this.state.answerInput, correct: this.refs.correctCheckBox.checked, score: 0 })}>Add Answer</button>
                 <br />
                 <button onClick={this.modifyQuestion.bind(this)}>Save</button>
                 <NotificationContainer />

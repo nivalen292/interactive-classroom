@@ -42,7 +42,16 @@ const init = (data) => {
         });
         socket.on('change-question', (data) => {
             io.to(data.roomID).emit('change-question', data.questionIndex);
-        })
+        });
+        socket.on('show-results', (dataObj) => {
+            data.getRoomByID(dataObj.roomID)
+                .then((room) => {
+                    const results = room.questions[dataObj.questionIndex].answers
+                        .slice(0)
+                        .map((a) => a.score);
+                    io.to(dataObj.roomID).emit('show-results', { results: results, questionIndex: dataObj.questionIndex });
+                });
+        });
     });
 
     return Promise.resolve(server);

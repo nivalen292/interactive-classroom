@@ -8,6 +8,7 @@ import socketIOClient from 'socket.io-client';
 // react notifications
 import 'react-notifications/lib/notifications.css';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
+import QuestionResults from './question-results';
 
 class Room extends Component {
     constructor(props) {
@@ -21,14 +22,26 @@ class Room extends Component {
             showModifyQuestionForm: false,
             questionToModify: null,
             questionIndexToModify: -1,
+            questionResults: null,
+            questionIndexResults: -1,
             endpoint: 'http://localhost:5000'
         }
     }
 
     componentDidMount() {
         const socket = socketIOClient(this.state.endpoint);
+
         socket.on('change-question', (index) => {
+            // to remove any result content
+            this.setState({ questionResults: null });
+            this.setState({ questionIndexResults: -1 });
+
             this.setState({ currentQuestion: this.state.questions[index] });
+        });
+
+        socket.on('show-results', (data) => {
+            this.setState({ questionIndexResults: data.questionIndex });
+            this.setState({ questionResults: data.results });
         });
 
         get('http://localhost:5000/api/room/' + this.props.match.params.roomID)
@@ -41,10 +54,6 @@ class Room extends Component {
             }).catch((error) => {
                 NotificationManager.error('No room with ID: ' + this.props.match.params.roomID + ' exists!', 'Okay!', 3000);
             });
-    }
-
-    componentWillUnmount() {
-
     }
 
     isAuthenticated() {
@@ -78,8 +87,15 @@ class Room extends Component {
         }
     }
 
+    showResults(roomID, questionIndex) {
+        const socket = socketIOClient(this.state.endpoint);
+        socket.emit('show-results', { roomID: roomID, questionIndex: questionIndex });
+    }
+
     showGuestContent() {
-        return (<Question roomID={this.state.roomID} question={this.state.currentQuestion || { text: '', answers: [], score: 0 }} />);
+        return (this.state.questionResults === null ?
+            <Question roomID={this.state.roomID} question={this.state.currentQuestion || { text: '', answers: [], score: 0 }} />
+            : <QuestionResults results={this.state.questionResults} question={this.state.questions[this.state.questionIndexResults]}/>);
     }
 
     showOwnerContent() {
@@ -93,7 +109,7 @@ class Room extends Component {
                             <button onClick={() => this.triggerUpdateCurrentQuestion(index)}>Display</button>
                             <button onClick={() => this.toggleModifyQuestionForm(index)}>Modify</button>
                             <button onClick={() => this.removeQuestion(index)}>Remove</button>
-                            <button>Results</button>
+                            <button onClick={() => this.showResults(this.state.roomID, index)}>Results</button>
                         </div>
                     );
                 })}

@@ -30,7 +30,7 @@ class Question extends Component {
     }
 
     sendAnswer() {
-        if (this.state.selectedAnswerIndex == -1) {
+        if (this.state.selectedAnswerIndex === -1) {
             NotificationManager.error('Select an answer first!', 'Error!', 3000);
             return;
         }
