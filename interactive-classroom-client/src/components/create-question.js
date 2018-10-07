@@ -4,6 +4,12 @@ import React, { Component } from 'react';
 import 'react-notifications/lib/notifications.css';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 
+// ui
+import { TextField, Grid, Button, IconButton } from '@material-ui/core';
+import AddIcon from '@material-ui/icons/Add';
+import SaveIcon from '@material-ui/icons/Save';
+import DeleteIcon from '@material-ui/icons/Delete';
+
 class CreateQuestion extends Component {
     constructor(props) {
         super(props);
@@ -61,25 +67,36 @@ class CreateQuestion extends Component {
             <div className="CreateQuestion">
                 <h2>New Question: </h2>
                 <h3>Text: {this.state.textInput}</h3>
-                <input value={this.state.textInput} onChange={this.updateTextInput.bind(this)} />
+                <TextField label="Text" value={this.state.textInput} onChange={this.updateTextInput.bind(this)} />
                 <h3>Answers: </h3>
                 {this.state.answers.map((a, index) => {
                     return (
                         <div key={index}>
-                            <p>{a.text} : {a.correct ? 'Correct' : 'Wrong'}</p>
-                            <button onClick={() => this.removeAnswer(index)}>Remove Answer</button>
+                            <p>{a.text} : {a.correct ? 'Correct' : 'Wrong'}
+                                <IconButton style={{marginLeft: '10px'}} aria-label="Delete" color="primary" onClick={() => this.removeAnswer(index)}>
+                                    <DeleteIcon />
+                                </IconButton>
+                            </p>
                         </div>
                     );
                 })}
                 <h3>Add Answer: </h3>
-                <input value={this.state.answerInput} onChange={this.updateAnswerInput.bind(this)} />
-                <span>Correct?</span>
-                <input type="checkbox" ref="correctCheckBox" />
-                <button onClick={() => this.addAnswer({ text: this.state.answerInput, correct: this.refs.correctCheckBox.checked, score: 0 })}>Add Answer</button>
+                <TextField label="Answer Text" value={this.state.answerInput} onChange={this.updateAnswerInput.bind(this)} />
+                <Grid container style={{
+                    height: '100%',
+                    width: '100%',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                }}>
+                    <Grid><p>Correct?</p></Grid>
+                    <Grid><input type="checkbox" ref="correctCheckBox" /></Grid>
+                </Grid>
+                <Button style={{ marginBottom: '10px' }} mini variant="fab" color="primary" aria-label="Add" onClick={() => this.addAnswer({ text: this.state.answerInput, correct: this.refs.correctCheckBox.checked, score: 0 })}><AddIcon /></Button>
                 <br />
-                <button onClick={this.addQuestion.bind(this)}>Save</button>
+                <Button variant="contained" color="primary" onClick={this.addQuestion.bind(this)}>Save <SaveIcon /></Button>
                 <NotificationContainer />
-            </div>
+            </div >
         );
     }
 }

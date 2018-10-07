@@ -10,6 +10,11 @@ import 'react-notifications/lib/notifications.css';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import QuestionResults from './question-results';
 
+// material-ui
+import { Button, ExpansionPanel, ExpansionPanelDetails, ExpansionPanelSummary, Typography } from '@material-ui/core';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import AddIcon from '@material-ui/icons/Add';
+
 class Room extends Component {
     constructor(props) {
         super(props);
@@ -63,7 +68,7 @@ class Room extends Component {
             }).catch((error) => {
                 NotificationManager.error('No room with ID: ' + this.props.match.params.roomID + ' exists!', 'Okay!', 3000);
             });
-        
+
         // before unmount
         window.addEventListener('beforeunload', () => {
             socket.emit('leave', { roomID: this.state.roomID, isGuest: !this.isAuthenticated() });
@@ -119,15 +124,25 @@ class Room extends Component {
                 {this.state.questions.map((q, index) => {
                     return (
                         <div key={index}>
-                            <p>{q.text}</p>
-                            <button onClick={() => this.triggerUpdateCurrentQuestion(index)}>Display</button>
-                            <button onClick={() => this.toggleModifyQuestionForm(index)}>Modify</button>
-                            <button onClick={() => this.removeQuestion(index)}>Remove</button>
-                            <button onClick={() => this.showResults(this.state.roomID, index)}>Results</button>
+                            <ExpansionPanel>
+                                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                                    <Typography>{q.text}</Typography>
+                                </ExpansionPanelSummary>
+                                <ExpansionPanelDetails>
+                                    <Button variant="contained" color="primary" onClick={() => this.triggerUpdateCurrentQuestion(index)}>
+                                        Display
+                                    </Button>
+                                    <Button variant="contained" color="secondary" onClick={() => this.toggleModifyQuestionForm(index)}>Modify</Button>
+                                    <Button variant="contained" color="secondary" onClick={() => this.removeQuestion(index)}>
+                                        Delete
+                                    </Button>
+                                    <Button style={{ backgroundColor: 'green' }} variant="contained" color="primary" onClick={() => this.showResults(this.state.roomID, index)}>Results</Button>
+                                </ExpansionPanelDetails>
+                            </ExpansionPanel>
                         </div>
                     );
                 })}
-                <button onClick={this.toggleCreateQuestionForm.bind(this)}>New Question Form</button>
+                <Button style={{marginTop: '10px'}} variant="fab" color="primary" aria-label="Add" onClick={this.toggleCreateQuestionForm.bind(this)}><AddIcon /></Button>
                 <br />
                 {this.showCreateQuestionForm()}
                 {this.showModifyQuestionForm()}
@@ -204,8 +219,8 @@ class Room extends Component {
         return (
             <div className="Room">
                 <h1>Room: {this.state.name}</h1>
-                {this.showContent()}
                 <h3>Guests: {this.state.guests}</h3>
+                {this.showContent()}
                 <NotificationContainer />
             </div>
         );

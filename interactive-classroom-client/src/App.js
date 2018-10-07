@@ -16,7 +16,7 @@ class App extends Component {
         <main>
           <Switch>
             <Route exact path='/' component={Home} />
-            <Route exact path='/room/:roomID' render={(props) => {
+            <Route exact path='/room/:roomID' render={(props) => { // or just component
               return (<Room {...props} />);
             }} />
           </Switch>

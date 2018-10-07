@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import { putRequest as put } from '../utils/requests';
 
+// material-ui
+import { List, ListItem, ListItemText, Checkbox, AppBar, Typography, Toolbar } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
+
 // react notifications
 import 'react-notifications/lib/notifications.css';
 import { NotificationManager } from 'react-notifications';
@@ -23,8 +27,16 @@ class Question extends Component {
 
     getQuestionAnswers() {
         if (this.props.question.answers.length > 0) {
-            return this.props.question.answers
-                .map((ans, i) => <li style={{color: i === this.state.selectedAnswerIndex ? 'coral' : 'black'}} onClick={() => this.setState({ selectedAnswerIndex: i })} key={i}>{ans.text}</li>);
+            // return this.props.question.answers
+            //     .map((ans, i) => <li style={{ color: i === this.state.selectedAnswerIndex ? 'coral' : 'black' }} onClick={() => this.setState({ selectedAnswerIndex: i })} key={i}>{ans.text}</li>);
+            return (<List>
+                {this.props.question.answers.map((answer, i) => (
+                    <ListItem key={i} role={undefined} dense button onClick={() => this.setState({ selectedAnswerIndex: i })}>
+                        <Checkbox checked={this.state.selectedAnswerIndex === i} tabIndex={-1} disableRipple />
+                        <ListItemText primary={answer.text} />
+                    </ListItem>
+                ))}
+            </List>);
         }
         return 'No answers';
     }
@@ -51,10 +63,8 @@ class Question extends Component {
             // voting content
             return (
                 <div>
-                    <ul>
-                        {this.getQuestionAnswers()}
-                    </ul>
-                    <button onClick={this.sendAnswer.bind(this)}>Submit</button>
+                    {this.getQuestionAnswers()}
+                    <Button variant="contained" color="primary" style={{ width: '100%' }} onClick={this.sendAnswer.bind(this)}>Submit</Button>
                 </div>
             );
         }
@@ -65,7 +75,13 @@ class Question extends Component {
     render() {
         return (
             <div className="Question">
-                <h2>{this.getQuestionText()}</h2>
+                <AppBar position="static" color="primary">
+                    <Toolbar>
+                        <Typography variant="title" color="inherit">
+                            {this.getQuestionText()}
+                        </Typography>
+                    </Toolbar>
+                </AppBar>
                 {this.showContent()}
             </div>
         );
