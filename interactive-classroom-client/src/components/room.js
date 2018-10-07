@@ -63,7 +63,8 @@ class Room extends Component {
             }).catch((error) => {
                 NotificationManager.error('No room with ID: ' + this.props.match.params.roomID + ' exists!', 'Okay!', 3000);
             });
-
+        
+        // before unmount
         window.addEventListener('beforeunload', () => {
             socket.emit('leave', { roomID: this.state.roomID, isGuest: !this.isAuthenticated() });
         });

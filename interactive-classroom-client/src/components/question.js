@@ -3,7 +3,7 @@ import { putRequest as put } from '../utils/requests';
 
 // react notifications
 import 'react-notifications/lib/notifications.css';
-import { NotificationContainer, NotificationManager } from 'react-notifications';
+import { NotificationManager } from 'react-notifications';
 
 class Question extends Component {
     constructor(props) {
@@ -24,7 +24,7 @@ class Question extends Component {
     getQuestionAnswers() {
         if (this.props.question.answers.length > 0) {
             return this.props.question.answers
-                .map((ans, i) => <li onClick={() => this.setState({ selectedAnswerIndex: i })} key={i}>{ans.text}</li>);
+                .map((ans, i) => <li style={{color: i === this.state.selectedAnswerIndex ? 'coral' : 'black'}} onClick={() => this.setState({ selectedAnswerIndex: i })} key={i}>{ans.text}</li>);
         }
         return 'No answers';
     }
