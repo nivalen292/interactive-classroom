@@ -34,11 +34,30 @@ const init = (data) => {
     const server = require('http').Server(app);
     const io = require('socket.io')(server);
 
+    // guest sockets by rooms
+    let guestCount = {};
+
     io.sockets.on('connection', function (socket) {
         socket.on('disconnect', function (someData) {
         });
         socket.on('join', function (data) {
             socket.join(data.roomID);
+            // count only guests not owners
+            if (data.isGuest) {
+                if (guestCount.hasOwnProperty(data.roomID)) {
+                    guestCount[data.roomID]++;
+                }
+                else {
+                    guestCount[data.roomID] = 1;
+                }
+            }
+            io.to(data.roomID).emit('join', { guests: guestCount[data.roomID] /*io.of('/').in(data.roomID).clients.length*/ });
+        });
+        socket.on('leave', (dataObj) => {
+            if (dataObj.isGuest) {
+                guestCount[dataObj.roomID]--;
+                socket.to(dataObj.roomID).emit('leave', { guests: guestCount[dataObj.roomID] });
+            }
         });
         socket.on('change-question', (data) => {
             io.to(data.roomID).emit('change-question', data.questionIndex);

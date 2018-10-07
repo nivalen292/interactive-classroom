@@ -24,6 +24,7 @@ class Room extends Component {
             questionIndexToModify: -1,
             questionResults: null,
             questionIndexResults: -1,
+            guests: 0,
             endpoint: 'http://localhost:5000'
         }
     }
@@ -44,16 +45,28 @@ class Room extends Component {
             this.setState({ questionResults: data.results });
         });
 
+        socket.on('join', (data) => {
+            this.setState({ guests: data.guests || 0 });
+        });
+
+        socket.on('leave', (data) => {
+            this.setState({ guests: data.guests });
+        });
+
         get('http://localhost:5000/api/room/' + this.props.match.params.roomID)
             .then((room) => {
                 this.setState({ questions: room.questions });
                 this.setState({ currentQuestion: room.currentQuestion === null ? { text: '', answers: [] } : room.currentQuestion });
                 this.setState({ name: room.name });
                 this.setState({ roomID: room.roomID });
-                socket.emit('join', { roomID: this.state.roomID });
+                socket.emit('join', { roomID: this.state.roomID, isGuest: !this.isAuthenticated() });
             }).catch((error) => {
                 NotificationManager.error('No room with ID: ' + this.props.match.params.roomID + ' exists!', 'Okay!', 3000);
             });
+
+        window.addEventListener('beforeunload', () => {
+            socket.emit('leave', { roomID: this.state.roomID, isGuest: !this.isAuthenticated() });
+        });
     }
 
     isAuthenticated() {
@@ -95,7 +108,7 @@ class Room extends Component {
     showGuestContent() {
         return (this.state.questionResults === null ?
             <Question roomID={this.state.roomID} question={this.state.currentQuestion || { text: '', answers: [], score: 0 }} />
-            : <QuestionResults results={this.state.questionResults} question={this.state.questions[this.state.questionIndexResults]}/>);
+            : <QuestionResults results={this.state.questionResults} question={this.state.questions[this.state.questionIndexResults]} />);
     }
 
     showOwnerContent() {
@@ -191,6 +204,7 @@ class Room extends Component {
             <div className="Room">
                 <h1>Room: {this.state.name}</h1>
                 {this.showContent()}
+                <h3>Guests: {this.state.guests}</h3>
                 <NotificationContainer />
             </div>
         );
