@@ -11,8 +11,7 @@
     "build-client": "cd interactive-classroom-client && npm run build",
     "start": "node server.js",
     "hostrun": "npm install && npm run build-client && npm start",
-    "dev:server": "cd interactive-classroom-client && npm build && cd .. && npm start",
-    "heroku-postbuild": "cd interactive-classroom-client && npm install && npm install --only=dev --no-shrinkwrap && npm run build"
+    "dev:server": "cd interactive-classroom-client && npm build && cd .. && npm start"
   },
   "repository": {
     "type": "git",
