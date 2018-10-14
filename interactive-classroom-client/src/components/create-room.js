@@ -10,7 +10,7 @@ import { NotificationContainer, NotificationManager } from 'react-notifications'
 import { TextField, Grid, Button } from '@material-ui/core';
 
 // config
-import config from '../utils/constants';
+import config from '../utils/client-constants';
 
 class CreateRoom extends Component {
     constructor(props) {

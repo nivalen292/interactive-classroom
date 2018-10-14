@@ -10,7 +10,7 @@ import 'react-notifications/lib/notifications.css';
 import { NotificationManager } from 'react-notifications';
 
 // config
-import config from '../utils/constants';
+import config from '../utils/client-constants';
 
 class Question extends Component {
     constructor(props) {

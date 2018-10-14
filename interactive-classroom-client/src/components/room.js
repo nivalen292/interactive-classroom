@@ -16,7 +16,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import AddIcon from '@material-ui/icons/Add';
 
 // config
-import config from '../utils/constants';
+import config from '../utils/client-constants';
 
 class Room extends Component {
     constructor(props) {
