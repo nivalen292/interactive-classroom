@@ -10,6 +10,9 @@ import { NotificationContainer, NotificationManager } from 'react-notifications'
 // ui
 import { TextField, Grid, Button } from '@material-ui/core';
 
+// config
+import config from '../utils/constants';
+
 class OwnerForm extends Component {
     constructor(props) {
         super(props);
@@ -26,7 +29,7 @@ class OwnerForm extends Component {
             NotificationManager.error('You must enter a name and password first!', 'Error!', 3000);
             return;
         }
-        put('http://localhost:5000/api/room', { name: this.state.name, password: sha256(this.state.password).toString() })
+        put(`${config.endpoint}/api/room`, { name: this.state.name, password: sha256(this.state.password).toString() })
             .then((response) => {
                 if (response.status === 200) {
                     return response.json();

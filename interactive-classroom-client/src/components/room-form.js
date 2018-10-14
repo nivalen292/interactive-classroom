@@ -9,6 +9,9 @@ import { NotificationContainer, NotificationManager } from 'react-notifications'
 // ui
 import { TextField, Grid, Button } from '@material-ui/core';
 
+// config
+import config from '../utils/constants';
+
 class RoomForm extends Component {
     constructor(props) {
         super(props);
@@ -20,7 +23,7 @@ class RoomForm extends Component {
     joinRoom() {
         const name = this.state.inputValue;
         this.setState({ inputValue: '' });
-        put('http://localhost:5000/api/room', { name: name })
+        put(`${config.endpoint}/api/room`, { name: name })
             .then((response) => response.json())
             .then((room) => {
                 this.props.history.push('/room/' + room.roomID);

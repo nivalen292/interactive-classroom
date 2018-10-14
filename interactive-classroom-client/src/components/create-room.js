@@ -9,6 +9,9 @@ import { NotificationContainer, NotificationManager } from 'react-notifications'
 // ui
 import { TextField, Grid, Button } from '@material-ui/core';
 
+// config
+import config from '../utils/constants';
+
 class CreateRoom extends Component {
     constructor(props) {
         super(props);
@@ -23,7 +26,7 @@ class CreateRoom extends Component {
             NotificationManager.error('You must enter a name and password first!', 'Error!', 3000);
             return;
         }
-        post('http://localhost:5000/api/room', {
+        post(`${config.endpoint}/api/room`, {
             name: this.state.name,
             password: sha256(this.state.password).toString()
         })
