@@ -8,7 +8,7 @@
     "server": "nodemon server.js",
     "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build-client": "cd interactive-classroom-client && npm run build",
+    "build-client": "cd interactive-classroom-client && npm install && npm run build",
     "start": "node server.js",
     "hostrun": "npm install && npm run build-client && npm start",
     "dev:server": "cd interactive-classroom-client && npm build && cd .. && npm start"
