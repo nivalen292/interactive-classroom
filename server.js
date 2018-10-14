@@ -5,7 +5,7 @@ const async = () => {
 const { config } = require('./constants');
 
 async()
-    .then(() => require('./db').init(config.connectionString))
+    .then(() => require('./db').init(process.env.DB_URL || config.connectionString))
     .then((db) => require('./data').init(db))
     .then((data) => require('./app').init(data))
     .then((http) => {

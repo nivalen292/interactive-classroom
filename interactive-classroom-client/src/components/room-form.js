@@ -42,7 +42,7 @@ class RoomForm extends Component {
 
                 <Grid container>
                     <Grid item xs={12}>
-                        <TextField label="Name" value={this.state.name} value={this.state.inputValue} onChange={this.updateInputValue.bind(this)} />
+                        <TextField label="Name" value={this.state.inputValue} onChange={this.updateInputValue.bind(this)} />
                     </Grid>
                     <Grid item xs={12}>
                        <Button variant="contained" color="primary" style={{marginTop: "10px"}} onClick={this.joinRoom.bind(this)}>Enter</Button>
