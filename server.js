@@ -9,7 +9,7 @@ async()
     .then((db) => require('./data').init(db))
     .then((data) => require('./app').init(data))
     .then((http) => {
-        http.listen(process.env.PORT || config.port, () => {
+        http.listen(process.env.PORT || config.port, '0.0.0.0', () => {
             console.log(`Server running at localhost:${config.port}`);
         });
     });
