@@ -1,1 +1,1 @@
-web: npm run hostrun
+web: npm start
