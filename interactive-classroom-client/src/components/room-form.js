@@ -6,6 +6,9 @@ import { withRouter } from 'react-router-dom';
 import 'react-notifications/lib/notifications.css';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 
+// ui
+import { TextField, Grid, Button } from '@material-ui/core';
+
 class RoomForm extends Component {
     constructor(props) {
         super(props);
@@ -36,9 +39,15 @@ class RoomForm extends Component {
         return (
             <div className="RoomForm">
                 <h2>Join as guest</h2>
-                <label>Name</label>
-                <input value={this.state.inputValue} onChange={this.updateInputValue.bind(this)} />
-                <button onClick={this.joinRoom.bind(this)}>Enter</button>
+
+                <Grid container>
+                    <Grid item xs={12}>
+                        <TextField label="Name" value={this.state.name} value={this.state.inputValue} onChange={this.updateInputValue.bind(this)} />
+                    </Grid>
+                    <Grid item xs={12}>
+                       <Button variant="contained" color="primary" style={{marginTop: "10px"}} onClick={this.joinRoom.bind(this)}>Enter</Button>
+                    </Grid>
+                </Grid>
                 <NotificationContainer />
             </div>
         );

@@ -7,6 +7,9 @@ import sha256 from 'crypto-js/sha256';
 import 'react-notifications/lib/notifications.css';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 
+// ui
+import { TextField, Grid, Button } from '@material-ui/core';
+
 class OwnerForm extends Component {
     constructor(props) {
         super(props);
@@ -60,12 +63,16 @@ class OwnerForm extends Component {
         return (
             <div className="OwnerForm">
                 <h2>Join room as owner</h2>
-                <label>Name</label>
-                <input value={this.state.name} onChange={this.updateName.bind(this)} />
-                <label>Password</label>
-                <input value={this.state.password} onChange={this.updatePassword.bind(this)} />
-                <button onClick={this.joinRoom.bind(this)}>Join</button>
-                <NotificationContainer />
+                <Grid container>
+                    <Grid item xs={12}>
+                        <TextField label="Name" value={this.state.name} onChange={this.updateName.bind(this)} style={{marginRight: "10px"}}/>
+                        <TextField type="password" label="Password" value={this.state.password} onChange={this.updatePassword.bind(this)} />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Button variant="contained" color="primary" style={{marginTop: "10px"}} onClick={this.joinRoom.bind(this)}>Join</Button>
+                    </Grid>
+                    <NotificationContainer />
+                </Grid>
             </div>
         );
     }

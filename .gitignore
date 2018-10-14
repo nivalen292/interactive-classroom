@@ -1,3 +1,4 @@
 node_modules/
 constants.js
 interactive-classroom-client/node_modules/
+interactive-classroom-client/build/
