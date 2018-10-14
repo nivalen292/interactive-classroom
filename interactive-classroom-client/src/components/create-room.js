@@ -6,6 +6,12 @@ import sha256 from 'crypto-js/sha256';
 import 'react-notifications/lib/notifications.css';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 
+// ui
+import { TextField, Grid, Button } from '@material-ui/core';
+
+// config
+import config from '../utils/client-constants';
+
 class CreateRoom extends Component {
     constructor(props) {
         super(props);
@@ -20,7 +26,7 @@ class CreateRoom extends Component {
             NotificationManager.error('You must enter a name and password first!', 'Error!', 3000);
             return;
         }
-        post('http://localhost:5000/api/room', {
+        post(`${config.endpoint}/api/room`, {
             name: this.state.name,
             password: sha256(this.state.password).toString()
         })
@@ -49,11 +55,15 @@ class CreateRoom extends Component {
         return (
             <div className="CreateRoom">
                 <h2>Create room</h2>
-                <label>Name</label>
-                <input value={this.state.name} onChange={this.updateName.bind(this)} />
-                <label>Password</label>
-                <input value={this.state.password} onChange={this.updatePassword.bind(this)} />
-                <button onClick={this.createRoom.bind(this)}>Create</button>
+                <Grid container>
+                    <Grid item xs={12}>
+                        <TextField label="Name" value={this.state.name} style={{marginRight: "10px"}} onChange={this.updateName.bind(this)} />
+                        <TextField type="password" label="Password" value={this.state.password} onChange={this.updatePassword.bind(this)} />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Button variant="contained" color="primary" style={{marginTop: "10px"}} onClick={this.createRoom.bind(this)}>Create</Button>
+                    </Grid>
+                </Grid>
                 <NotificationContainer/>
             </div>
         );

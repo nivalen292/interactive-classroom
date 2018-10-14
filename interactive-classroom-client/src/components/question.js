@@ -9,6 +9,9 @@ import Button from '@material-ui/core/Button';
 import 'react-notifications/lib/notifications.css';
 import { NotificationManager } from 'react-notifications';
 
+// config
+import config from '../utils/client-constants';
+
 class Question extends Component {
     constructor(props) {
         super(props);
@@ -46,7 +49,7 @@ class Question extends Component {
             NotificationManager.error('Select an answer first!', 'Error!', 3000);
             return;
         }
-        put('http://localhost:5000/api/room/' + this.props.roomID + '/current-question/' + this.state.selectedAnswerIndex)
+        put(`${config.endpoint}/api/room/` + this.props.roomID + '/current-question/' + this.state.selectedAnswerIndex)
             .then((response) => {
                 if (response.status === 200) {
                     NotificationManager.success('Submitted answer', 'Success!', 3000);

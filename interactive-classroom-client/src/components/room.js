@@ -15,6 +15,9 @@ import { Button, ExpansionPanel, ExpansionPanelDetails, ExpansionPanelSummary, T
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import AddIcon from '@material-ui/icons/Add';
 
+// config
+import config from '../utils/client-constants';
+
 class Room extends Component {
     constructor(props) {
         super(props);
@@ -30,7 +33,7 @@ class Room extends Component {
             questionResults: null,
             questionIndexResults: -1,
             guests: 0,
-            endpoint: 'http://localhost:5000'
+            endpoint: config.endpoint
         }
     }
 
@@ -58,7 +61,7 @@ class Room extends Component {
             this.setState({ guests: data.guests });
         });
 
-        get('http://localhost:5000/api/room/' + this.props.match.params.roomID)
+        get(`${this.state.endpoint}/api/room/` + this.props.match.params.roomID)
             .then((room) => {
                 this.setState({ questions: room.questions });
                 this.setState({ currentQuestion: room.currentQuestion === null ? { text: '', answers: [] } : room.currentQuestion });
@@ -159,7 +162,7 @@ class Room extends Component {
 
     modifyQuestion(question, questionIndex) {
         // update db
-        put('http://localhost:5000/api/room/' + this.state.roomID + '/questions',
+        put(`${this.state.endpoint}/api/room/` + this.state.roomID + '/questions',
             { roomID: this.state.roomID, question: question, questionIndex: questionIndex })
             .then((response) => {
                 if (response.status === 200) {
@@ -174,7 +177,7 @@ class Room extends Component {
 
     addQuestion(question) {
         // update db
-        post('http://localhost:5000/api/room/' + this.state.roomID + '/questions', { question: question, roomID: this.state.roomID })
+        post(`${this.state.endpoint}/api/room/` + this.state.roomID + '/questions', { question: question, roomID: this.state.roomID })
             .then((response) => {
                 if (response.status === 201) {
                     NotificationManager.success('Added Question!', 'Success!', 3000);
@@ -189,7 +192,7 @@ class Room extends Component {
 
     removeQuestion(questionIndex) {
         // update db
-        del('http://localhost:5000/api/room/' + this.state.roomID + '/questions/' + questionIndex)
+        del(`${this.state.endpoint}/api/room/` + this.state.roomID + '/questions/' + questionIndex)
             .then((response) => {
                 if (response.status === 200) {
                     NotificationManager.success('Deleted Question!', 'Success!', 3000);
@@ -207,7 +210,7 @@ class Room extends Component {
         socket.emit('change-question', { questionIndex: index, roomID: this.state.roomID });
 
         // update db too to keep changes
-        put('http://localhost:5000/api/room/' + this.state.roomID + '/current-question', {
+        put(`${this.state.endpoint}/api/room/` + this.state.roomID + '/current-question', {
             questionIndex: index,
             roomID: this.state.roomID
         });

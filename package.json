@@ -8,10 +8,10 @@
     "server": "nodemon server.js",
     "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build-client": "cd interactive-classroom-client && npm run build",
+    "build-client": "cd interactive-classroom-client && npm install && npm run build",
     "start": "node server.js",
     "dev:server": "cd interactive-classroom-client && npm build && cd .. && npm start",
-    "heroku-postbuild": "cd interactive-classroom-client && npm install && npm install --only=dev --no-shrinkwrap && npm run build"
+    "heroku-postbuild": "npm install && npm run build-client && npm run build"
   },
   "repository": {
     "type": "git",
