@@ -10,6 +10,6 @@ async()
     .then((data) => require('./app').init(data))
     .then((http) => {
         http.listen(process.env.PORT || require('./constants').port, '0.0.0.0', () => {
-            console.log(`Server running at localhost:${config.port}`);
+            console.log(`Server running at localhost:${process.env.PORT || require('./constants').port}`);
         });
     });
